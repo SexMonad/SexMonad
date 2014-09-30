@@ -1,0 +1,12 @@
+pom.xml
+pom.xml.asc
+*jar
+overtone/lib/
+overtone/classes/
+overtone/native/
+overtone/target/
+overtone/checkouts/
+.lein-deps-sum
+.lein-repl-history
+.lein-plugins/
+.lein-failures
