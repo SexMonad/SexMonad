@@ -27,13 +27,13 @@
         filt (bpf (+ sqr noise) 9000 0.5)]
     (* amp env filt)))
 
-
-(definst o-hat [amp 0.8 t 0.5]
-  (let [env (env-gen (perc 0.001 t) 1 1 0 1 FREE)
-        noise (white-noise)
-        sqr (* (env-gen (perc 0.01 0.04)) (pulse 880 0.2))
-        filt (bpf (+ sqr noise) 9000 0.5)]
-    (* amp env filt)))
+;
+; (definst o-hat [amp 0.8 t 0.5]
+;   (let [env (env-gen (perc 0.001 t) 1 1 0 1 FREE)
+;         noise (white-noise)
+;         sqr (* (env-gen (perc 0.01 0.04)) (pulse 880 0.2))
+;         filt (bpf (+ sqr noise) 9000 0.5)]
+;     (* amp env filt)))
 
 ; define a metronome at a given tempo, expressed in beats per minute.
 (def metro (metronome 120))
@@ -43,13 +43,24 @@
 (let [freq 220]
    (demo (pluck (* (white-noise) (env-gen (perc 0.001 2) :action FREE)) 1 3 (/ 1 freq))))
 
+
+(defn rythm [beat]
+  (at (metro (+ 0 beat)) (kick 120 0.9 0.7))
+  (at (metro (+ 1 beat)) (kick 160 0.2 0.7))
+  (at (metro (+ 1 beat)) (kick 360 0.2 0.7))
+  (at (metro (+ 4 beat)) (kick 360 0.6 0.7))
+  ; (at (metro (+ 0.4 beat)) (c-hat 1.4 0.4))
+  (apply-at (metro (+ 2 beat)) #'rythm (+ 2 beat) []))
+
+(rythm (metro))
+
 (defn swinger [beat]
   ; (at (metro (+ 0 beat)) (sin-osc 400))
-  (at (metro (+ 0.0 beat)) (kick))
-  (at (metro (+ 0.0 beat)) (c-hat))
-  (at (metro (+ 0.2 beat)) (c-hat))
-  (at (metro (+ 0.5 beat)) (o-hat))
-  (at (metro (+ 0.6 beat)) (kick))
+  ; (at (metro (+ 0.0 beat)) (kick))
+  ; (at (metro (+ 0.0 beat)) (c-hat))
+  ; (at (metro (+ 0.2 beat)) (c-hat))
+  ; (at (metro (+ 0.5 beat)) (o-hat))
+  ; (at (metro (+ 0.6 beat)) (kick))
   (at (metro (+ 0.65  beat)) (kick 140))
   (at (metro (+ 1.65  beat)) (kick 180))
   ; (at (metro (+ 1  beat)) (saw-wave 520))
